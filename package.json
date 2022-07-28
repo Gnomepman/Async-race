@@ -4,7 +4,9 @@
   "description": "Private repository for @gnomepman",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack --watch",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -16,5 +18,14 @@
   "bugs": {
     "url": "https://github.com/rolling-scopes-school/gnomepman-JSFE2022Q1/issues"
   },
-  "homepage": "https://github.com/rolling-scopes-school/gnomepman-JSFE2022Q1#readme"
+  "homepage": "https://github.com/rolling-scopes-school/gnomepman-JSFE2022Q1#readme",
+  "devDependencies": {
+    "css-loader": "^6.7.1",
+    "html-webpack-plugin": "^5.5.0",
+    "style-loader": "^3.3.1",
+    "ts-loader": "^9.3.1",
+    "typescript": "^4.7.4",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
+  }
 }
