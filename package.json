@@ -1,0 +1,20 @@
+{
+  "name": "gnomepman-jsfe2022q1",
+  "version": "1.0.0",
+  "description": "Private repository for @gnomepman",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rolling-scopes-school/gnomepman-JSFE2022Q1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rolling-scopes-school/gnomepman-JSFE2022Q1/issues"
+  },
+  "homepage": "https://github.com/rolling-scopes-school/gnomepman-JSFE2022Q1#readme"
+}
