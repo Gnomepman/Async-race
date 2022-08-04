@@ -1,3 +1,5 @@
+import {carBody, winnerType, sort, order} from '../types/types';
+
 const base = 'http://localhost:3000'
 
 const garage = `${base}/garage`;
@@ -14,11 +16,6 @@ export const getCars = async (page: number, limit: number = 7) => {
 }
 
 export const getCar = async (id: number) => (await fetch(`${garage}/${id}`)).json();
-
-type carBody = {
-  name: string;
-  color: string;
-};
 
 export const createCar = async (body: carBody) => (await fetch(garage, {
     method: 'POST',
@@ -47,18 +44,9 @@ export const drive = async (id: number) => {
     return res.status !== 200 ? {success: false} : {...(await res.json())};
 }
 
-type sort = 'id' | 'winners' | 'time';
-type order = 'ASC' | 'DESC';
-
 const getSortOrder = (sort: sort, order: order) => {
     if (sort && order) return `&_sort=${sort}&_order=${order}`
     return '';
-}
-
-type winnerType = {
-    id: number;
-    wins: number;
-    time: number;
 }
 
 export const getWinners = async (page: number, limit: number = 10, sort: sort, order: order) => {
