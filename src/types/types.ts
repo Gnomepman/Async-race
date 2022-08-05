@@ -11,3 +11,9 @@ export type winnerType = {
 
 export type sort = "id" | "winners" | "time";
 export type order = "ASC" | "DESC";
+
+export type car = {
+    name: string;
+    color: string;
+    id: number;
+};
