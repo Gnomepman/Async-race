@@ -2,6 +2,7 @@ import * as api from '../api/api'
 import { car } from '../types/types';
 
 localStorage.current_page = 1;
+localStorage.id_to_edit = 0;
 
 export async function renderGarage(){
 
@@ -16,13 +17,13 @@ export async function renderGarage(){
         result += `
         <div class="car" id="${element.id}">
                     <div class="controls">
-                        <button class="button" id="select">Select</button>
-                        <button class="button" id="remove">Remove</button>
+                        <button class="button select" id="select_${element.id}">Select</button>
+                        <button class="button remove" id="remove_${element.id}">Remove</button>
                         <h3>${element.name}</h3>
                     </div>
                     <div class="path">
-                        <button id="start">A</button>
-                        <button id="stop">B</button>
+                        <button id="start_${element.id}">A</button>
+                        <button id="stop_${element.id}">B</button>
                         <svg enable-background="new 0 0 1000 600" height="600" id="" overflow="visible" version="1.1"
                             viewBox="0 0 1000 600" width="1000" xml:space="preserve">
                             <g id="">
@@ -36,23 +37,36 @@ export async function renderGarage(){
                     </div>
                     <hr>
                 </div>
-        `
+        `;
     });;
     
     document.getElementById("garage-wrapper")!.innerHTML = result;
 
-    if (Number(localStorage.current_page) === 1){
-        (<HTMLButtonElement>document.getElementById("prev_page"))!.disabled = true
-    } else {
-        (<HTMLButtonElement>document.getElementById("prev_page"))!.disabled = false
-    }
- 
-    if (7 * Number(localStorage.current_page) < Number(response.count)) {
-        (<HTMLButtonElement>document.getElementById("next_page"))!.disabled = false
-    } else {
-        (<HTMLButtonElement>document.getElementById("next_page"))!.disabled = true
-    }
+    //holy shit, it works, even though it looks disgusting
+    (<HTMLButtonElement>document.getElementById("prev_page"))!.disabled = Number(localStorage.current_page) === 1 ? true : false;
+    (<HTMLButtonElement>document.getElementById("next_page"))!.disabled = 7 * Number(localStorage.current_page) < Number(response.count) ? false : true;
+
+    Array.from(document.querySelectorAll('.remove')).forEach(element =>{ 
+        element.addEventListener('click', () => removeCar(Number(element.getAttribute('id')?.split('_')[1])))
+    })
+
+    Array.from(document.querySelectorAll('.select')).forEach(element => {
+        element.addEventListener('click', () => selectCar(Number(element.getAttribute('id')?.split('_')[1])))
+    });
 };
 
-await renderGarage();
+renderGarage();
+
+async function removeCar(id: number){
+    await api.deleteCar(id);
+    await renderGarage();
+}
+
+async function selectCar(id: number){
+    localStorage.id_to_edit = id;
+    const response = await api.getCar(id);
+    (<HTMLInputElement>document.getElementById("car-edit-name")).value = response.name;
+    (<HTMLInputElement>document.getElementById("car-edit-color")).value = response.color;
+}
+
 

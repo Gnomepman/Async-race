@@ -44,3 +44,27 @@ document.getElementById("next_page")!.addEventListener('click', async (e) => {
     localStorage.current_page = Number(localStorage.current_page) + 1;
     await renderGarage();
 })
+
+document.getElementById("update")!.addEventListener('click', async () => {
+    if (Number(localStorage.id_to_edit) !== 0){
+        await api.updateCar(
+          Number(localStorage.id_to_edit),
+          Object.fromEntries(
+            new Map([
+              [
+                "name",
+                (<HTMLInputElement>document.getElementById("car-edit-name")).value,
+              ],
+              [
+                "color",
+                (<HTMLInputElement>document.getElementById("car-edit-color")).value,
+              ],
+            ])
+          ) as carBody
+        );
+
+        await renderGarage();
+        localStorage.id_to_edit = 0;
+        (<HTMLInputElement>document.getElementById("car-edit-name")).value = '';
+    }
+});
