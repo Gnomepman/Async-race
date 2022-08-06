@@ -2,8 +2,7 @@ import * as api from '../api/api'
 import { carBody } from '../types/types';
 import {renderGarage} from '../ui/ui'
 
-document.getElementById("create")!.addEventListener('click', async (e) => {
-    console.log(e);
+document.getElementById("create")!.addEventListener('click', async () => {
     api.createCar(
       Object.fromEntries(
         new Map([
@@ -16,10 +15,9 @@ document.getElementById("create")!.addEventListener('click', async (e) => {
     await renderGarage();
 });
 
-document.getElementById("generate")!.addEventListener('click', async (e) => {
-    console.log(e);
-    const car_names: string[] = ['Tesla', 'Opel', 'Mazda', 'Ferrari', 'Ford', 'Reno', 'McLaren', 'Lanos'];
-    const car_models: string[] = ['13', 'Kuga', 'GT 40', 'F350']
+document.getElementById("generate")!.addEventListener('click', async () => {
+    const car_names: string[] = ['Tesla', 'Opel', 'Mazda', 'Ferrari', 'Ford', 'Reno', 'McLaren', 'Lanos', 'Audi'];
+    const car_models: string[] = ['13', 'Kuga', 'GT 40', 'F350', 'Magnum', 'Ascona', '1990', 'R8']
     const NUMBER_OF_CARS_TO_GENERATE = 100;
     for (let i = 0; i < NUMBER_OF_CARS_TO_GENERATE; i++){
         api.createCar(
@@ -35,12 +33,12 @@ document.getElementById("generate")!.addEventListener('click', async (e) => {
     await renderGarage();
 });
 
-document.getElementById("prev_page")!.addEventListener('click', async (e) => {
+document.getElementById("prev_page")!.addEventListener('click', async () => {
     localStorage.current_page = Number(localStorage.current_page) - 1;
     await renderGarage();
 })
 
-document.getElementById("next_page")!.addEventListener('click', async (e) => {
+document.getElementById("next_page")!.addEventListener('click', async () => {
     localStorage.current_page = Number(localStorage.current_page) + 1;
     await renderGarage();
 })
@@ -68,3 +66,15 @@ document.getElementById("update")!.addEventListener('click', async () => {
         (<HTMLInputElement>document.getElementById("car-edit-name")).value = '';
     }
 });
+
+document.getElementById("race")!.addEventListener('click', () => {
+    Array.from(document.querySelectorAll('.start')).forEach(element => {
+        (element as HTMLElement).click();
+    })
+})
+
+document.getElementById("reset")!.addEventListener('click', () => {
+  Array.from(document.querySelectorAll('.stop')).forEach(element => {
+      (element as HTMLElement).click();
+  })
+})
