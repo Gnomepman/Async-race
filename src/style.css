@@ -111,18 +111,6 @@ hr {
     margin-bottom: 20px;
 }
 
-@keyframes riding {
-    0% {}
-
-    100% {
-        transform: translateX(1000px);
-    }
-}
-
-/* svg:hover{
-    animation: riding 2s forwards;
-} */
-
 #start {
     background-color: greenyellow;
 }
@@ -146,6 +134,42 @@ hr {
     height: 100%;
 } */
 
-.finish_flag{
+.finish_flag {
     margin-left: auto;
+}
+
+.notification {
+    position: absolute;
+    width: 99vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: append-animate .5s linear;
+}
+
+.notification p {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background: -webkit-linear-gradient(rgb(212, 59, 59), rgb(65, 93, 183));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 0.05em;
+    font-style: italic;
+    font-size: 50px;
+}
+
+.notification span {
+    font-weight: 800;
+}
+
+@keyframes append-animate {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }

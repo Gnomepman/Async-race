@@ -1,8 +1,10 @@
 import * as api from '../api/api'
 import { car } from '../types/types';
+import { winnerNotification } from './winner_notification'
 
 localStorage.current_page = 1;
 localStorage.id_to_edit = 0;
+let winners: number[] = [];
 
 export async function renderGarage(){
 
@@ -100,6 +102,7 @@ async function selectCar(id: number){
 }
 
 async function startCar(id: number){
+    winners = [];
     (<HTMLButtonElement>document.getElementById(`start_${id}`))!.disabled = true;
     (<HTMLButtonElement>document.getElementById(`stop_${id}`))!.disabled = false;
     const engine = await api.startEngine(id);
@@ -124,7 +127,13 @@ async function startCar(id: number){
     );
     
     const response = await api.drive(id);
-    response.success === false ? animation.pause(): console.log(id, "Success");
+    if (response.success === false) {
+        animation.pause();
+    } else {
+        if (winners.push(id) === 1){
+            winnerNotification(id);
+        }
+    }
     (<HTMLButtonElement>document.getElementById(`start_${id}`))!.disabled = false;
     return id;
 }
