@@ -7,11 +7,11 @@ localStorage.id_to_edit = 0;
 export async function renderGarage(){
 
     const page = Number(localStorage.current_page)
-
     const response = await api.getCars(page);
+    let result = '';
+
     document.getElementById("garage-counter")!.textContent = String(response.count);
     document.getElementById("page-counter")!.textContent = String(page);
-    let result = '';
 
     response.items.forEach((element: car) => {
         result += `
@@ -22,9 +22,9 @@ export async function renderGarage(){
                         <h3>${element.name}</h3>
                     </div>
                     <div class="path">
-                        <button id="start_${element.id}">A</button>
-                        <button id="stop_${element.id}">B</button>
-                        <svg enable-background="new 0 0 1000 600" height="600" id="" overflow="visible" version="1.1"
+                        <button id="start_${element.id}" class="start">A</button>
+                        <button id="stop_${element.id}" class="stop">B</button>
+                        <svg enable-background="new 0 0 1000 600" height="600" id="car_${element.id}" overflow="visible" version="1.1"
                             viewBox="0 0 1000 600" width="1000" xml:space="preserve">
                             <g id="">
                                 <g>
@@ -34,6 +34,27 @@ export async function renderGarage(){
                                 </g>
                             </g>
                         </svg>
+                        <svg enable-background="new 0 0 50 50" height="50px" id="finish_${element.id}" class="finish_flag" version="1.1" viewBox="0 0 50 50">
+                                    <rect fill="none" height="50" width="50" />
+                                    <line fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"
+                                        stroke-width="2" x1="18.594" x2="3.373" y1="47.92" y2="5.407" />
+                                    <path
+                                        d="  M4.448,8.409c0,0,5.911-6.409,16.179-6.409c6.25,0,9.106,4.073,14.264,4.073C40.046,6.073,44.998,2,44.998,2v26.471  c0,0-3.723,2.037-8.146,2.037c-4.421,0-6.225-2.037-12.217-2.037c-5.683,0-11.025,5.516-11.025,5.516L4.448,8.409z"
+                                        fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"
+                                        stroke-width="2" />
+                                    <path d="M4.448,8.409c0,0,3.067-3.248,7.207-4.584l3.164,8.124c0,0-4.086,1.47-7.422,4.605L4.553,8.709" />
+                                    <path
+                                        d="M14.819,11.949l3.412,8.759c0,0,2.683-0.954,4.53-0.954s3.678,0.271,3.678,0.271l-2.477-9.315c0,0-0.7-0.099-1.563-0.099  C18.264,10.611,14.819,11.949,14.819,11.949z" />
+                                    <path d="M10.72,25.776l2.89,8.21c0,0,3.997-3.832,7.804-4.91l-3.182-8.368C14.566,22.12,10.72,25.776,10.72,25.776z" />
+                                    <path
+                                        d="M21.676,2.111l2.287,8.598c1.85,0,6.994,2.521,6.994,2.521l-2.028-8.879C27.766,3.916,24.721,2.255,21.676,2.111z" />
+                                    <path
+                                        d="M26.439,20.024l2.355,8.851c1.186,0,4.586,1.449,6.065,1.449l-1.988-8.702C30.957,21.124,27.859,20.223,26.439,20.024z" />
+                                    <path
+                                        d="M30.957,13.231l1.915,8.392c0,0,1.916,0.354,3.231,0.354c1.314,0,2.953-0.298,2.953-0.298l-0.622-7.684  c0,0-1.269,0.394-2.807,0.394C33.225,14.389,30.957,13.231,30.957,13.231z" />
+                                    <path d="M37.762,5.671l0.673,8.323c0,0,3.129-0.786,6.565-3.384L44.998,2C41.053,5.022,37.762,5.671,37.762,5.671z" />
+                                    <path d="M39.057,21.679c0,0,3.014-0.559,5.941-2.259v9.051c-3.117,1.496-5.261,1.767-5.261,1.767L39.057,21.679z" />
+                                </svg>
                     </div>
                     <hr>
                 </div>
@@ -46,13 +67,21 @@ export async function renderGarage(){
     (<HTMLButtonElement>document.getElementById("prev_page"))!.disabled = Number(localStorage.current_page) === 1 ? true : false;
     (<HTMLButtonElement>document.getElementById("next_page"))!.disabled = 7 * Number(localStorage.current_page) < Number(response.count) ? false : true;
 
-    Array.from(document.querySelectorAll('.remove')).forEach(element =>{ 
+    Array.from(document.querySelectorAll('.remove')).forEach(element => { 
         element.addEventListener('click', () => removeCar(Number(element.getAttribute('id')?.split('_')[1])))
     })
 
     Array.from(document.querySelectorAll('.select')).forEach(element => {
         element.addEventListener('click', () => selectCar(Number(element.getAttribute('id')?.split('_')[1])))
     });
+
+    Array.from(document.querySelectorAll('.start')).forEach(element => {
+        element.addEventListener('click', () => startCar(Number(element.getAttribute('id')?.split('_')[1])));
+    })
+
+    Array.from(document.querySelectorAll('.stop')).forEach(element => {
+        element.addEventListener('click', () => stopCar(Number(element.getAttribute('id')?.split('_')[1])));
+    })
 };
 
 renderGarage();
@@ -69,4 +98,63 @@ async function selectCar(id: number){
     (<HTMLInputElement>document.getElementById("car-edit-color")).value = response.color;
 }
 
+async function startCar(id: number){
+    (<HTMLButtonElement>document.getElementById(`start_${id}`))!.disabled = true;
+    const engine = await api.startEngine(id);
+    const car = document.getElementById(`car_${id}`)!;
+    const distance = getDistanceBetweenElements(car, document.getElementById(`finish_${id}`)!)
 
+    const animation = car.animate(
+      [
+        {
+          // from
+          transform: "translateX(0px)"
+        },
+        {
+          // to
+          transform: `translateX(${distance + 10}px)`,
+        },
+      ],
+      {
+        duration: engine.distance / engine.velocity,
+        fill: 'forwards'
+      }
+    );
+    
+    const response = await api.drive(id);
+    response.success === false ? animation.pause(): console.log(id, "Success");
+    (<HTMLButtonElement>document.getElementById(`start_${id}`))!.disabled = false;
+}
+
+async function stopCar(id: number) {
+  await api.stopEngine(id);
+  const car = document.getElementById(`car_${id}`)!;
+  car.animate(
+    [
+      {
+        // from
+      },
+      {
+        // to
+        transform: "translateX(0px)",
+      },
+    ],
+    {
+      fill: "forwards",
+    }
+  );
+}
+
+function getPositionAtCenter(element: HTMLElement) {
+  const { top, left, width, height } = element.getBoundingClientRect();
+  return {
+    x: left + width / 2,
+    y: top + height / 2,
+  };
+}
+
+function getDistanceBetweenElements(a: HTMLElement, b: HTMLElement) {
+  const aPosition = getPositionAtCenter(a);
+  const bPosition = getPositionAtCenter(b);
+  return Math.hypot(aPosition.x - bPosition.x, aPosition.y - bPosition.y);
+}
