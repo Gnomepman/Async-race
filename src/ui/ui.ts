@@ -79,7 +79,8 @@ export async function renderGarage(){
         element.addEventListener('click', () => startCar(Number(element.getAttribute('id')?.split('_')[1])));
     })
 
-    Array.from(document.querySelectorAll('.stop')).forEach(element => {
+    Array.from(document.querySelectorAll('.stop')).forEach((element) => {
+        (element as HTMLButtonElement).disabled = true;
         element.addEventListener('click', () => stopCar(Number(element.getAttribute('id')?.split('_')[1])));
     })
 };
@@ -100,6 +101,7 @@ async function selectCar(id: number){
 
 async function startCar(id: number){
     (<HTMLButtonElement>document.getElementById(`start_${id}`))!.disabled = true;
+    (<HTMLButtonElement>document.getElementById(`stop_${id}`))!.disabled = false;
     const engine = await api.startEngine(id);
     const car = document.getElementById(`car_${id}`)!;
     const distance = getDistanceBetweenElements(car, document.getElementById(`finish_${id}`)!)
@@ -124,6 +126,7 @@ async function startCar(id: number){
     const response = await api.drive(id);
     response.success === false ? animation.pause(): console.log(id, "Success");
     (<HTMLButtonElement>document.getElementById(`start_${id}`))!.disabled = false;
+    return id;
 }
 
 async function stopCar(id: number) {
@@ -143,6 +146,8 @@ async function stopCar(id: number) {
       fill: "forwards",
     }
   );
+  (<HTMLButtonElement>document.getElementById(`stop_${id}`))!.disabled = true;
+  (<HTMLButtonElement>document.getElementById(`start_${id}`))!.disabled = false;
 }
 
 function getPositionAtCenter(element: HTMLElement) {
