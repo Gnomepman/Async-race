@@ -1,5 +1,5 @@
 import * as api from '../api/api'
-import { car } from '../types/types';
+import { car, winnerType } from '../types/types';
 import { winnerNotification } from './winners/winner_notification'
 
 localStorage.current_page = 1;
@@ -91,6 +91,7 @@ renderGarage();
 
 async function removeCar(id: number){
     await api.deleteCar(id);
+    await api.deleteWinner(id);
     await renderGarage();
 }
 
@@ -130,9 +131,13 @@ async function startCar(id: number){
     if (response.success === false) {
         animation.pause();
     } else {
-        if (winners.push(id) === 1){
-            winnerNotification(id);
-        }
+      if (winners.push(id) === 1) {
+        winnerNotification(id);
+        api.saveWinner(
+          id,
+          Math.floor(engine.distance / engine.velocity) / 1000
+        );
+      }
     }
     (<HTMLButtonElement>document.getElementById(`start_${id}`))!.disabled = false;
     return id;

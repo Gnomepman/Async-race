@@ -1,10 +1,8 @@
 document.getElementById("body")!.innerHTML = `
 <div class="container">
         <div class="navigation">
-            <input type="radio" name="select" value="garage" id="garage" checked>
-            <label for="garage">Garage</label>
-            <input type="radio" name="select" value="winners" id="winners">
-            <label for="winners">Winners</label>
+            <button class="nav_buttons" id="garage">Garage</button>
+            <button class="nav_buttons" id="winners">Winners</button>
         </div>
         <div class="garage-container">
             <div class="customization">

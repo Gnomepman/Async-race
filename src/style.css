@@ -32,23 +32,33 @@ svg {
 .container {
     margin: 0 auto;
     width: 95%;
+    position: relative;
 }
 
 .navigation {
     margin-top: 20px;
     display: flex;
     gap: 20px;
+    position: relative;
+    z-index: 2;
 }
 
 input[type=radio] {
     display: none;
 }
 
-label {
+label, .nav_buttons {
     padding: 5px;
     border: 2px solid #ffe0b2;
     border-radius: 4px;
     box-shadow: #29434e 0px 10px 30px;
+    font-size: 20px;
+    font-family: sans-serif;
+    background-color: #819ca9;
+}
+
+.nav_buttons:disabled {
+    background-color: #648491;
 }
 
 label:hover, button:hover, .controls button:hover {
@@ -119,21 +129,6 @@ hr {
     background-color: red;
 }
 
-/* .garage-container {
-    position: relative;
-    top: 0;
-    z-index: 1;
-}
-
-.winners-container {
-    position: absolute;
-    top: 0;
-    z-index: 0;
-    background-color: #819ca9;
-    width: 100%;
-    height: 100%;
-} */
-
 .finish_flag {
     margin-left: auto;
 }
@@ -172,4 +167,49 @@ hr {
         transform: scale(1);
         opacity: 1;
     }
+}
+
+.winners {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: #819ca9;
+    margin-top: 20px;
+}
+
+.display {
+    display: none !important;
+}
+
+table {
+    border-spacing: 0;
+}
+
+thead {
+    background-color: rgb(95, 95, 236);
+    font-weight: 600;
+    font-style: normal;
+    padding: 5px;
+}
+
+tbody th {
+    font-weight: normal !important;
+}
+
+thead th {
+    padding: 10px 30px 10px 30px;
+}
+
+table {
+    border: 3px solid white;
+    border-radius: 5px;
+}
+
+table svg {
+    width: 100px;
+}
+
+#winner_id:hover, #winner_wins:hover, #winner_time:hover{
+    cursor: pointer;
 }
