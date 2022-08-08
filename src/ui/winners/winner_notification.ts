@@ -1,4 +1,4 @@
-import { getCar } from "../api/api";
+import { getCar } from "../../api/api";
 
 export async function winnerNotification(id: number) {
   const notification = document.createElement("div");

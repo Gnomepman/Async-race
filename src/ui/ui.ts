@@ -1,6 +1,6 @@
 import * as api from '../api/api'
 import { car } from '../types/types';
-import { winnerNotification } from './winner_notification'
+import { winnerNotification } from './winners/winner_notification'
 
 localStorage.current_page = 1;
 localStorage.id_to_edit = 0;
