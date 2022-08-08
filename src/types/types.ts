@@ -9,7 +9,7 @@ export type winnerType = {
   time: number;
 };
 
-export type sort = "id" | "winners" | "time";
+export type sort = "id" | "wins" | "time";
 export type order = "ASC" | "DESC";
 
 export type car = {
